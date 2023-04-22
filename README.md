@@ -34,3 +34,35 @@ sbu_images/3333_4640771555_10735f3068.jpg,And the winning horse gets a bucket of
 sbu_images/1147_1447704653_df10d8c099.jpg,"The girl in the blue dress is our cousin, Lynda."
 ```
 It seems that all images are validated, and `prepare_annotations.py` saves a json file as annotations used in ALBEF.
+
+### LAVIS
+Using LAVIS helper to download dataset like SBU (or even CC3m and CC12m) may require data [validating](https://github.com/salesforce/LAVIS/issues/44).
+
+```python
+import tqdm
+import os
+nonvalid_records=[]
+valid_records=[]
+with open('sbu_captions/annotations/sbu.json', "r") as f:
+    dset=json.load(f)
+    def check_file_exists(filename,path):
+        exist=os.path.exists(os.path.join(path,filename))
+        return exist
+
+    for ann in tqdm.tqdm(dset):
+        exist=check_file_exists(ann['image'],'sbu_captions/images')
+
+        if exist:
+            valid_records.append(ann)
+        else:
+            nonvalid_records.append(ann)
+    print('not valid records',len(nonvalid_records),'valid records',len(valid_records))
+
+print("saving valid")
+with open('sbu_captions/annotations/sbu_valid.json', "w") as f:
+    dset=json.dump(valid_records,f)
+
+print("saving nonvalid")
+with open('sbu_captions/annotations/sbu_nonvalid.json', "w") as f:
+    dset=json.dump(nonvalid_records,f)
+```

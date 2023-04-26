@@ -70,36 +70,22 @@ with open('sbu_captions/annotations/sbu_nonvalid.json', "w") as f:
 ### Misc
 Some annotations (VG, CC3m, CC12m) use absolute path that requires special care when training on other machines.
 ```python
-# VG
-with open('/tank/local/cgo5577/lavis_datasets/vg/annotations/vg_caption.json', 'r') as f: 
+import json
+
+annotation_file = '/tank/local/cgo5577/lavis_datasets/conceptual_caption/annotations/cc3m.json'
+old_path = '/home/yiren'
+new_path = '/tank/local/cgo5577'
+
+with open(annotation_file, 'r') as f:
   data = json.load(f)
 
 for i in range(len(data)):
-  data[i]['image'] = data[i]['image'].replace('/home/yiren', '/tank/local/cgo5577')
+  data[i]['image'] = data[i]['image'].replace(old_path, new_path)
 
-with open('/tank/local/cgo5577/lavis_datasets/vg/annotations/vg_caption.json', 'w') as json_file:
+with open(annotation_file, 'w') as json_file:
   json.dump(data, json_file)
 
-# CC3m
-with open('/tank/local/cgo5577/lavis_datasets/conceptual_caption/annotations/cc3m.json', 'r') as f: 
-  data = json.load(f)
-
-for i in range(len(data)):
-  data[i]['image'] = data[i]['image'].replace('/home/yiren', '/tank/local/cgo5577')
-  
-with open('/tank/local/cgo5577/lavis_datasets/conceptual_caption/annotations/cc3m.json', 'w') as json_file:
-  json.dump(data, json_file)
-
-# CC12m
-with open('/tank/local/cgo5577/lavis_datasets/conceptual_caption/annotations/cc12m.json', 'r') as f: 
-  data = json.load(f)
-
-for i in range(len(data)):
-  data[i]['image'] = data[i]['image'].replace('/home/yiren', '/tank/local/cgo5577')
-
-with open('/tank/local/cgo5577/lavis_datasets/conceptual_caption/annotations/cc12m.json', 'w') as json_file:
-  json.dump(data, json_file)
 ```
 
-###
+### Acknowledgement
 Thanks for original implementations of [DownloadConceptualCaptions](https://github.com/igorbrigadir/DownloadConceptualCaptions)

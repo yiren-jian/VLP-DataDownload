@@ -87,5 +87,26 @@ with open(annotation_file, 'w') as json_file:
 
 ```
 
+### Flickr30k Caption
+
+Converting LAVIS downloaded Flickr30k to Flickr30k Captioning dataset.
+```python
+import json
+
+ann_path = "train.json"
+with open(ann_path, 'r') as f:
+    ann = json.load(f)
+
+new_ann = []
+for item in ann:
+    img = item["image"]
+    for cap in item["caption"]:
+        new_ann.append({"img_id": img, "caption":cap, "image": img})
+
+new_ann = {"annotations": new_ann}
+with open("train_cap.json", "w") as outputfile:
+    json.dump(new_ann, outputfile)
+```
+
 ### Acknowledgement
 Thanks for original implementations of [DownloadConceptualCaptions](https://github.com/igorbrigadir/DownloadConceptualCaptions)
